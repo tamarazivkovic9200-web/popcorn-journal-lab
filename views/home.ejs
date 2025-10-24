@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popcorn Journal</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+<body class="landing-page">
+
+  <div class="landing-card">
+    <% if (user) { %>
+        <h1 class="app-title">🍿 Welcome, <%= user.username %>!</h1>
+        <p class="tagline">Enjoy tracking your favorite Movies & TV Shows</p>
+    <div class="auth-buttons">
+        <a href="/auth/sign-out" class="btn sign-up">Sign out</a>
+    </div>
+    <% } else { %>
+    <h1 class="app-title">🍿 Popcorn Journal</h1>
+    <p class="tagline">Track your favorite Movies & TV Shows.</p>
+
+    <div class="auth-buttons">
+      <a class="btn sign-in" href="/auth/sign-in">Sign In</a>
+      <a class="btn sign-up" href="/auth/sign-up">Sign Up</a>
+    <% } %>
+    </div>
+  </div>
+
+</body>
+</html>

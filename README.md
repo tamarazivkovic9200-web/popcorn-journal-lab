@@ -10,7 +10,7 @@ You can add, edit, delete, and review shows in your personal watchlist.
 
 
 ## Wireframe
-<img src="./images/Wireframe.png">
+<img src="./public/images/Wireframe.png">
 
 ## Home Page
 - App name and description
@@ -39,5 +39,5 @@ You can add, edit, delete, and review shows in your personal watchlist.
 
 ## ERD
 
-<img src="./images/ERD.png">
+<img src="./public/images/ERD.png">
 
