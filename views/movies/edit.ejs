@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit</title>
+     <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+<body class="landing-page">
+
+    <div class="landing-card">
+        <h1 class="app-title">Edit <%= movie.title %></h1>
+   <form action="/movies/<%= movie._id %>?_method=PUT" method="POST" class="auth-form">
+    
+        <label for="type">Type</label>
+      <select id="type" name="type" required>
+        <option value="">-- Select --</option>
+        <option value="Movie">Movie</option>
+        <option value="TV Show">TV Show</option>
+      </select>
+
+        <label>Genre</label>
+        <input type="text" name="genre" value="<%= movie.genre %>">
+        
+
+        <label>Release Year</label>
+        <input type="number" name="releaseYear" value="<%= movie.releaseYear %>">
+
+        <label>
+            <input type="checkbox" name="watched" <%= movie.watched ? 'checked' : '' %>> Watched
+        </label>
+        <button type="submit" class="btn sign-in">Save Changes</button>
+        <a href="/movies" class="btn sign-up">Back to List</a>
+    </form>
+    </div>
+</body>
+</html>

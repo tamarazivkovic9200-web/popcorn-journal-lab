@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Watchlist | Popcorn Journal</title>
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+
+<body class="landing-page">
+  <div class="landing-card">
+    <h1 class="app-title">🎬 Your Watchlist</h1>
+
+    <div class="auth-buttons">
+      <a href="/movies/new" class="btn add-movie">➕ Add New Movie</a>
+      <a href="/" class="btn home">🏠 Home</a>
+    </div>
+
+    <div class="filter-grid">
+      <a href="/movies" class="<%= !filter ? 'active' : '' %>">All</a>
+      <a href="/movies?filter=Movie" class="<%= filter === 'Movie' ? 'active' : '' %>">Movies</a>
+      <a href="/movies?filter=TV Show" class="<%= filter === 'TV Show' ? 'active' : '' %>">TV Shows</a>
+    </div>
+
+    <% if (movies.length === 0) { %>
+      <p class="tagline">No movies yet — start building your collection!</p>
+    <% } else { %>
+      <div class="movie-grid">
+        <% movies.forEach(movie => { %>
+          <div class="movie-card <%= movie.watched ? 'watched' : 'unwatched' %>">
+            
+            <!-- 🎞 POSTER -->
+            <img 
+              src="<%= movie.image %>" 
+              alt="<%= movie.title %> poster" 
+              class="movie-poster"
+              onerror="this.src='/images/placeholder.png'"
+            />
+
+            <!-- 🎬 INFO -->
+            <div class="movie-header">
+              <strong class="movie-title"><%= movie.title %></strong>
+              <span class="movie-type">(<%= movie.type %>, <%= movie.releaseYear %>)</span>
+            </div>
+
+            <% if (movie.genre && movie.genre.length > 0) { %>
+              <p class="movie-genre"><%= movie.genre.join(', ') %></p>
+            <% } %>
+
+            <p class="movie-status">
+              <% if (movie.watched) { %> ✅ Watched <% } else { %> ⏳ To Watch <% } %>
+            </p>
+
+            <!-- ⚙️ ACTIONS -->
+            <div class="movie-actions">
+              <a href="/movies/<%= movie._id %>/edit" class="btn small sign-in">✏️ Edit</a>
+              <a href="/movies/<%= movie._id %>/delete" class="btn small sign-up">🗑 Delete</a>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>

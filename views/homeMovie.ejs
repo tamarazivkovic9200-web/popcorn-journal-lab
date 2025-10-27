@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🍿 Popcorn Journal</title>
+
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Poppins:wght@400;500;600&family=Playfair+Display:ital@1&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="landing-page home-movie">
+
+  <!-- ===== HEADER / NAV ===== -->
+  <header class="landing-header">
+    <h1 class="app-title">🍿 Popcorn Journal</h1>
+    <nav class="auth-nav">
+      <% if (!user) { %>
+        <a href="/auth/sign-in" class="nav-link">Sign In</a>
+        <a href="/auth/sign-up" class="nav-link">Sign Up</a>
+      <% } else { %>
+        <a href="/movies" class="nav-link">My Watchlist</a>
+        <a href="/auth/sign-out" class="nav-link">Sign Out</a>
+      <% } %>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="landing-content">
+
+    <!-- 🎬 MOVIES SECTION -->
+    <h2 class="section-heading">🎬 Popular Movies</h2>
+    <div class="movie-grid">
+      <% movies.forEach(movie => { %>
+        <div class="movie-card">
+          <img
+            src="<%= movie.image %>"
+            alt="<%= movie.title %> poster"
+            class="movie-poster"
+            onerror="this.src='/images/placeholder.png'"
+          />
+
+          <h3 class="movie-title"><%= movie.title %></h3>
+          <p class="movie-type">(<%= movie.releaseYear %>)</p>
+
+          <% if (movie.genre && movie.genre.length > 0) { %>
+            <p class="movie-genre"><%= movie.genre.join(', ') %></p>
+          <% } %>
+
+          <% if (user) { %>
+            <form action="/movies" method="POST" style="width:100%;">
+              <input type="hidden" name="title" value="<%= movie.title %>">
+              <input type="hidden" name="type" value="<%= movie.type %>">
+              <input type="hidden" name="releaseYear" value="<%= movie.releaseYear %>">
+              <input type="hidden" name="image" value="<%= movie.image %>">
+              <input type="hidden" name="watched" value="false">
+              <% movie.genre.forEach(g => { %>
+                <input type="hidden" name="genre[]" value="<%= g %>">
+              <% }) %>
+              <button type="submit" class="btn small sign-in">➕ Add to Watchlist</button>
+            </form>
+          <% } else { %>
+            <a class="btn small sign-up" href="/auth/sign-in">🔒 Sign in to Add</a>
+          <% } %>
+        </div>
+      <% }) %>
+    </div>
+
+    <!-- 📺 TV SHOWS SECTION -->
+    <h2 class="section-heading" style="margin-top:2rem;">📺 Top TV Shows</h2>
+    <div class="movie-grid">
+      <% shows.forEach(show => { %>
+        <div class="movie-card">
+          <img
+            src="<%= show.image %>"
+            alt="<%= show.title %> poster"
+            class="movie-poster"
+            onerror="this.src='/images/placeholder.png'"
+          />
+
+          <h3 class="movie-title"><%= show.title %></h3>
+          <p class="movie-type">(<%= show.releaseYear %>)</p>
+
+          <% if (show.genre && show.genre.length > 0) { %>
+            <p class="movie-genre"><%= show.genre.join(', ') %></p>
+          <% } %>
+
+          <% if (user) { %>
+            <form action="/movies" method="POST" style="width:100%;">
+              <input type="hidden" name="title" value="<%= show.title %>">
+              <input type="hidden" name="type" value="<%= show.type %>">
+              <input type="hidden" name="releaseYear" value="<%= show.releaseYear %>">
+              <input type="hidden" name="image" value="<%= show.image %>">
+              <input type="hidden" name="watched" value="false">
+              <% show.genre.forEach(g => { %>
+                <input type="hidden" name="genre[]" value="<%= g %>">
+              <% }) %>
+              <button type="submit" class="btn small sign-in">➕ Add to Watchlist</button>
+            </form>
+          <% } else { %>
+            <a class="btn small sign-up" href="/auth/sign-in">🔒 Sign in to Add</a>
+          <% } %>
+        </div>
+      <% }) %>
+    </div>
+
+  </main>
+</body>
+</html>
