@@ -8,9 +8,9 @@ router.get('/', async (req, res) => {
   if (!req.session.user) return res.redirect('/auth/sign-in');
 
   try {
-    const filter = req.query.filter; // can be 'Movie', 'TV Show', or undefined
-
+    const filter = req.query.filter; // 'Movie', 'TV Show', or undefined
     const query = { user: req.session.user._id };
+
     if (filter === 'Movie' || filter === 'TV Show') {
       query.type = filter;
     }
@@ -20,66 +20,85 @@ router.get('/', async (req, res) => {
     res.render('movies/index', {
       movies,
       user: req.session.user,
-      filter, // pass filter to EJS
+      filter,
     });
   } catch (error) {
     console.log(error);
     res.redirect('/');
   }
 });
-// NEW - show form to add a new movie
+
+// NEW - form to add a new movie manually
 router.get('/new', isSignedIn, (req, res) => {
   res.render('movies/new', { user: req.session.user });
 });
 
-// CREATE - add a new movie to the database
+// CREATE - add a movie (works for both form + AJAX)
 router.post('/', isSignedIn, async (req, res) => {
   try {
-    req.body.user = req.session.user._id;
-    req.body.watched = req.body.watched === 'on';
+    const data = req.body;
+    data.user = req.session.user._id;
 
-    const existing = await Movie.findOne({
-      title: req.body.title,
-      user: req.body.user
-    });
-
-    if (existing) {
-      return res.redirect('/movies'); // already in watchlist
+    // Fix watched value for checkbox or JSON
+    if (typeof data.watched === 'string') {
+      data.watched = data.watched === 'on';
     }
 
-    await Movie.create(req.body);
+    // Prevent duplicate titles per user
+    const exists = await Movie.findOne({
+      title: data.title,
+      user: data.user,
+    });
+
+    if (exists) {
+      console.log('🎬 Already in watchlist:', data.title);
+      if (req.headers['content-type']?.includes('application/json')) {
+        return res.status(200).json({ message: 'Already in watchlist' });
+      }
+      return res.redirect('/movies');
+    }
+
+    await Movie.create(data);
+
+    // 🟢 If it’s an AJAX (fetch) request → stay on page
+    if (req.headers['content-type']?.includes('application/json')) {
+      return res.status(200).json({ message: 'Added successfully' });
+    }
+
+    // 🟡 Otherwise → regular form submit
     res.redirect('/movies');
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.error(err);
+    if (req.headers['content-type']?.includes('application/json')) {
+      return res.status(500).json({ error: 'Failed to add movie' });
+    }
     res.redirect('/');
   }
 });
-
-
-// EDIT - show form to edit a movie
+// EDIT FORM - Show the edit page for a movie
 router.get('/:id/edit', isSignedIn, async (req, res) => {
   try {
     const movie = await Movie.findById(req.params.id);
-    res.render('movies/edit', { movie, user: req.session.user });
-  } catch (error) {
-    console.log(error);
+    if (!movie) return res.redirect('/movies');
+    res.render('movies/edit', { movie });
+  } catch (err) {
+    console.error(err);
     res.redirect('/movies');
   }
 });
 
-// UPDATE - handle edit form submission
-router.post('/:id', isSignedIn, async (req, res) => {
+// EDIT
+
+router.post('/:id/edit', async (req, res) => {
   try {
-    req.body.watched = req.body.watched === 'on';
-    await Movie.findByIdAndUpdate(req.params.id, req.body);
+    await Movie.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.redirect('/movies');
-  } catch (error) {
-    console.log(error);
-    res.redirect('/movies');
+  } catch (err) {
+    console.error(err);
+    res.render('movies/edit', { movie: req.body, error: err.message });
   }
 });
-
-// DELETE - remove a movie
+// DELETE
 router.get('/:id/delete', isSignedIn, async (req, res) => {
   try {
     await Movie.findByIdAndDelete(req.params.id);

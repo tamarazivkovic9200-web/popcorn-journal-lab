@@ -1,42 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add New Movie</title>
-     <link rel="stylesheet" href="/stylesheets/style.css" />
-</head>
-<body class="landing-page">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body class="landing-page">
     <div class="landing-card">
-        <h1 class="app-title">🍿 Add New Movie / TV Show</h1>
-    <form action="/movies" method="POST" class="auth-form">
+      <h1 class="app-title">🍿 Add New Movie / TV Show</h1>
+      <form action="/movies" method="POST" class="auth-form">
         <label>Title</label>
-        <input type="text" name="title"required>
+        <input type="text" name="title" required />
 
-          <label for="type">Type</label>
-      <select id="type" name="type" required>
-        <option value="">-- Select --</option>
-        <option value="Movie">Movie</option>
-        <option value="TV Show">TV Show</option>
-      </select>
+        <label for="type">Type</label>
+        <select id="type" name="type" required>
+          <option value="">-- Select --</option>
+          <option value="Movie">Movie</option>
+          <option value="TV Show">TV Show</option>
+        </select>
 
         <label>Genre</label>
-        <input type="text" name="genre">
-        
+        <input type="text" name="genre" />
 
         <label>Release Year</label>
-        <input type="number" name="releaseYear">
+        <input
+          type="text"
+          name="releaseYear"
+          id="releaseYear"
+          placeholder="e.g. 2024"
+        />
+     <div class="form-group">
+          <label for="image">Poster Image URL (optional)</label>
+          <input
+            type="text"
+            id="image"
+            name="image"
+            placeholder="https://example.com/poster.jpg"
+          />
+        </div>
+        <div class="checkbox-div">
+          <label for="watched">Watched</label>
+          <input type="checkbox" id="watched" name="watched" />
+        </div>
 
-        <label>
-            <input type="checkbox" name="watched"> Watched
-        </label>
+        
 
         <button type="submit" class="btn sign-in">Save</button>
-    </form>
+      </form>
 
-    <a href="/movies" class="btn sign-up">Back to List</a>
-    
+      <a href="/movies" class="btn sign-up">Back to List</a>
     </div>
-    
-</body>
+  </body>
 </html>

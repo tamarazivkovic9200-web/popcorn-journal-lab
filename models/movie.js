@@ -6,7 +6,7 @@ const movieSchema = new mongoose.Schema({
   genre: [String],
   releaseYear: Number,
   watched: { type: Boolean, default: false },
-  image: String,
+  image: { type: String, default: '' }, 
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });
 

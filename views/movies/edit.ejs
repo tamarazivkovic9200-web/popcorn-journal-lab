@@ -1,37 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit</title>
-     <link rel="stylesheet" href="/stylesheets/style.css" />
-</head>
-<body class="landing-page">
-
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body class="landing-page">
     <div class="landing-card">
-        <h1 class="app-title">Edit <%= movie.title %></h1>
-   <form action="/movies/<%= movie._id %>?_method=PUT" method="POST" class="auth-form">
-    
-        <label for="type">Type</label>
-      <select id="type" name="type" required>
-        <option value="">-- Select --</option>
-        <option value="Movie">Movie</option>
-        <option value="TV Show">TV Show</option>
-      </select>
+      <h1 class="app-title">Edit <%= movie.title %></h1>
+  <form
+  action="/movies/<%= movie._id %>/edit"
+  method="POST"
+  class="auth-form"
+>
+  <label for="type">Type</label>
+  <input
+    type="text"
+    id="type"
+    name="type"
+    value="<%= movie.type %>"
+    placeholder="e.g. Movie or TV Show"
+  />
 
-        <label>Genre</label>
-        <input type="text" name="genre" value="<%= movie.genre %>">
-        
+  <label>Genre</label>
+  <input type="text" name="genre" value="<%= movie.genre %>" />
 
-        <label>Release Year</label>
-        <input type="number" name="releaseYear" value="<%= movie.releaseYear %>">
+  <label>Release Year</label>
+  <input
+    type="text"
+    name="releaseYear"
+    id="releaseYear"
+    value="<%= movie.releaseYear %>"
+    placeholder="e.g. 2024"
+  />
 
-        <label>
-            <input type="checkbox" name="watched" <%= movie.watched ? 'checked' : '' %>> Watched
-        </label>
-        <button type="submit" class="btn sign-in">Save Changes</button>
-        <a href="/movies" class="btn sign-up">Back to List</a>
-    </form>
+  <div class="form-group">
+    <label for="image">Poster Image URL (optional)</label>
+    <input
+      type="text"
+      id="image"
+      name="image"
+      value="<%= movie.image %>"
+      placeholder="https://example.com/poster.jpg"
+    />
+  </div>
+
+  <label>
+    <input type="checkbox" name="watched" <%= movie.watched ? 'checked' : '' %>>
+    Watched
+  </label>
+
+  <button type="submit" class="btn sign-in">Save Changes</button>
+  <a href="/movies" class="btn sign-up">Back to List</a>
+</form>
     </div>
-</body>
+  </body>
 </html>

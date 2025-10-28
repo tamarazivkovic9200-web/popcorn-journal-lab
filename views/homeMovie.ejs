@@ -28,82 +28,172 @@
   <!-- ===== MAIN CONTENT ===== -->
   <main class="landing-content">
 
-    <!-- 🎬 MOVIES SECTION -->
-    <h2 class="section-heading">🎬 Popular Movies</h2>
-    <div class="movie-grid">
-      <% movies.forEach(movie => { %>
-        <div class="movie-card">
-          <img
-            src="<%= movie.image %>"
-            alt="<%= movie.title %> poster"
-            class="movie-poster"
-            onerror="this.src='/images/placeholder.png'"
-          />
-
-          <h3 class="movie-title"><%= movie.title %></h3>
-          <p class="movie-type">(<%= movie.releaseYear %>)</p>
-
-          <% if (movie.genre && movie.genre.length > 0) { %>
-            <p class="movie-genre"><%= movie.genre.join(', ') %></p>
-          <% } %>
-
-          <% if (user) { %>
-            <form action="/movies" method="POST" style="width:100%;">
-              <input type="hidden" name="title" value="<%= movie.title %>">
-              <input type="hidden" name="type" value="<%= movie.type %>">
-              <input type="hidden" name="releaseYear" value="<%= movie.releaseYear %>">
-              <input type="hidden" name="image" value="<%= movie.image %>">
-              <input type="hidden" name="watched" value="false">
-              <% movie.genre.forEach(g => { %>
-                <input type="hidden" name="genre[]" value="<%= g %>">
-              <% }) %>
-              <button type="submit" class="btn small sign-in">➕ Add to Watchlist</button>
-            </form>
-          <% } else { %>
-            <a class="btn small sign-up" href="/auth/sign-in">🔒 Sign in to Add</a>
-          <% } %>
-        </div>
-      <% }) %>
+    <!-- ===== CLICKABLE CONTENT HEADER ===== -->
+    <div class="content-header">
+      <a href="#movies" class="tab-link active">🎬 Popular Movies</a>
+      <a href="#shows" class="tab-link">📺 Popular TV Shows</a>
     </div>
 
-    <!-- 📺 TV SHOWS SECTION -->
-    <h2 class="section-heading" style="margin-top:2rem;">📺 Top TV Shows</h2>
-    <div class="movie-grid">
-      <% shows.forEach(show => { %>
-        <div class="movie-card">
-          <img
-            src="<%= show.image %>"
-            alt="<%= show.title %> poster"
-            class="movie-poster"
-            onerror="this.src='/images/placeholder.png'"
-          />
+    <!-- ===== MOVIES SECTION ===== -->
+    <section id="movies">
+      <div class="movie-grid">
+        <% movies.forEach(movie => { %>
+          <div class="movie-card">
+            <img
+              src="<%= movie.image %>"
+              alt="<%= movie.title %> poster"
+              class="movie-poster"
+              onerror="this.src='/images/placeholder.png'"
+            />
 
-          <h3 class="movie-title"><%= show.title %></h3>
-          <p class="movie-type">(<%= show.releaseYear %>)</p>
+            <h3 class="movie-title"><%= movie.title %></h3>
+            <p class="movie-type">(<%= movie.releaseYear %>)</p>
 
-          <% if (show.genre && show.genre.length > 0) { %>
-            <p class="movie-genre"><%= show.genre.join(', ') %></p>
-          <% } %>
+            <% if (movie.genre && movie.genre.length > 0) { %>
+              <p class="movie-genre"><%= movie.genre.join(', ') %></p>
+            <% } %>
 
-          <% if (user) { %>
-            <form action="/movies" method="POST" style="width:100%;">
-              <input type="hidden" name="title" value="<%= show.title %>">
-              <input type="hidden" name="type" value="<%= show.type %>">
-              <input type="hidden" name="releaseYear" value="<%= show.releaseYear %>">
-              <input type="hidden" name="image" value="<%= show.image %>">
-              <input type="hidden" name="watched" value="false">
-              <% show.genre.forEach(g => { %>
-                <input type="hidden" name="genre[]" value="<%= g %>">
-              <% }) %>
-              <button type="submit" class="btn small sign-in">➕ Add to Watchlist</button>
-            </form>
-          <% } else { %>
-            <a class="btn small sign-up" href="/auth/sign-in">🔒 Sign in to Add</a>
-          <% } %>
-        </div>
-      <% }) %>
-    </div>
+            <% if (user) { %>
+              <button
+                type="button"
+                class="btn small sign-in add-btn"
+                data-title="<%= movie.title %>"
+                data-type="<%= movie.type %>"
+                data-year="<%= movie.releaseYear %>"
+                data-image="<%= movie.image %>"
+                data-genre="<%= movie.genre.join(',') %>"
+              >
+                ➕ Add to Watchlist
+              </button>
+            <% } else { %>
+              <a class="btn small sign-up" href="/auth/sign-in">🔒 Sign in to Add</a>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+    </section>
 
+    <!-- ===== TV SHOWS SECTION ===== -->
+    <section id="shows" style="margin-top: 4rem;">
+      <div class="movie-grid">
+        <% shows.forEach(show => { %>
+          <div class="movie-card">
+            <img
+              src="<%= show.image %>"
+              alt="<%= show.title %> poster"
+              class="movie-poster"
+              onerror="this.src='/images/placeholder.png'"
+            />
+
+            <h3 class="movie-title"><%= show.title %></h3>
+            <p class="movie-type">(<%= show.releaseYear %>)</p>
+
+            <% if (show.genre && show.genre.length > 0) { %>
+              <p class="movie-genre"><%= show.genre.join(', ') %></p>
+            <% } %>
+
+            <% if (user) { %>
+              <button
+                type="button"
+                class="btn small sign-in add-btn"
+                data-title="<%= show.title %>"
+                data-type="<%= show.type %>"
+                data-year="<%= show.releaseYear %>"
+                data-image="<%= show.image %>"
+                data-genre="<%= show.genre.join(',') %>"
+              >
+                ➕ Add to Watchlist
+              </button>
+            <% } else { %>
+              <a class="btn small sign-up" href="/auth/sign-in">🔒 Sign in to Add</a>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+    </section>
   </main>
+
+  <!-- ===== POPUP MODAL ===== -->
+  <div id="popup" class="popup hidden">
+    <div class="popup-content">
+      <h3>Add to:</h3>
+      <button id="addWatched" class="popup-btn">✅ Watched</button>
+      <button id="addToWatch" class="popup-btn">⏳ To Watch</button>
+      <button id="closePopup" class="popup-close">✖</button>
+    </div>
+  </div>
+
+  <!-- ===== TOAST MESSAGE ===== -->
+  <div id="toast" class="toast hidden">✅ Added to your watchlist!</div>
+
+  <!-- ===== JS ===== -->
+  <script>
+    const popup = document.getElementById('popup');
+    const addWatchedBtn = document.getElementById('addWatched');
+    const addToWatchBtn = document.getElementById('addToWatch');
+    const closePopup = document.getElementById('closePopup');
+    const toast = document.getElementById('toast');
+    let selectedMovie = null;
+
+    // ===== Popup Open =====
+    document.querySelectorAll('.add-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        selectedMovie = {
+          title: button.dataset.title,
+          type: button.dataset.type,
+          releaseYear: button.dataset.year,
+          image: button.dataset.image,
+          genre: button.dataset.genre.split(','),
+        };
+        popup.classList.remove('hidden');
+      });
+    });
+
+    // ===== Popup Close =====
+    closePopup.addEventListener('click', () => popup.classList.add('hidden'));
+
+    // ===== Toast Function =====
+    function showToast(message, type = 'success') {
+      toast.textContent = message;
+      toast.style.background = type === 'error'
+        ? 'rgba(239, 68, 68, 0.95)'   // red for error
+        : 'rgba(250, 204, 21, 0.95)'; // gold for success
+
+      toast.classList.remove('hidden');
+      toast.classList.add('show');
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.classList.add('hidden'), 400);
+      }, 2000);
+    }
+
+    // ===== Add Movie via Fetch =====
+    async function addMovie(watched) {
+      const res = await fetch('/movies', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...selectedMovie, watched }),
+      });
+      popup.classList.add('hidden');
+      if (res.ok) {
+        showToast('✅ Added to your watchlist!');
+      } else {
+        showToast('❌ Error adding movie.', 'error');
+      }
+    }
+
+    addWatchedBtn.addEventListener('click', () => addMovie(true));
+    addToWatchBtn.addEventListener('click', () => addMovie(false));
+
+    // ===== Active Tab Highlight =====
+    const tabs = document.querySelectorAll('.tab-link');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      });
+    });
+  </script>
 </body>
 </html>
