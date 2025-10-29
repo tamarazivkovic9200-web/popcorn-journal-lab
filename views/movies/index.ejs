@@ -11,16 +11,36 @@
   <div class="landing-card">
     <h1 class="app-title">🎬 Your Watchlist</h1>
 
+    <!-- 🧭 NAV BUTTONS -->
     <div class="auth-buttons">
-      <a href="/movies/new" class="btn add-movie">➕ Add New Movie</a>
-      <a href="/" class="btn home">🏠 Home</a>
+      <a href="/movies/new" class="btn add-movie">çAdd New Movie</a>
+      <a href="/" class="btn home">Home</a>
     </div>
 
+    <!-- 🎞️ TYPE FILTERS -->
     <div class="filter-grid">
-      <a href="/movies" class="<%= !filter ? 'active' : '' %>">All</a>
-      <a href="/movies?filter=Movie" class="<%= filter === 'Movie' ? 'active' : '' %>">Movies</a>
-      <a href="/movies?filter=TV Show" class="<%= filter === 'TV Show' ? 'active' : '' %>">TV Shows</a>
+      <a href="/movies" class="<%= !type ? 'active' : '' %>">All</a>
+      <a href="/movies?type=Movie" class="<%= type === 'Movie' ? 'active' : '' %>">Movies 🎬</a>
+      <a href="/movies?type=TV%20Show" class="<%= type === 'TV Show' ? 'active' : '' %>">TV Shows 📺</a>
     </div>
+
+    <!-- ✅ WATCHED FILTERS — show only if a type is selected -->
+
+    <% if (type) { %>
+      <div class="filter-grid new-filters ">
+        <a href="/movies?type=<%= type %>" class="<%= !filter ? 'active' : '' %>">
+          All
+        </a>
+        <a href="/movies?type=<%= type %>&filter=Watched"
+           class="<%= filter === 'Watched' ? 'active' : '' %>">
+          Watched 
+        </a>
+        <a href="/movies?type=<%= type %>&filter=ToWatch"
+           class="<%= filter === 'ToWatch' ? 'active' : '' %>">
+          To Watch 
+        </a>
+      </div>
+    <% } %>
 
     <% if (movies.length === 0) { %>
       <p class="tagline">No movies yet — start building your collection!</p>
@@ -61,5 +81,6 @@
       </div>
     <% } %>
   </div>
+
 </body>
 </html>

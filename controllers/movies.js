@@ -3,16 +3,25 @@ const router = express.Router();
 const Movie = require('../models/movie.js');
 const isSignedIn = require('../middleware/is-signed-in.js');
 
-// INDEX - show all movies for the logged-in user
+// INDEX - show all movies for the logged-in user, with type + watched filters
 router.get('/', async (req, res) => {
   if (!req.session.user) return res.redirect('/auth/sign-in');
 
   try {
-    const filter = req.query.filter; // 'Movie', 'TV Show', or undefined
+    const type = req.query.type;     // 'Movie' or 'TV Show'
+    const filter = req.query.filter; // 'Watched' or 'ToWatch'
     const query = { user: req.session.user._id };
 
-    if (filter === 'Movie' || filter === 'TV Show') {
-      query.type = filter;
+    // 🎞 Filter by type
+    if (type === 'Movie' || type === 'TV Show') {
+      query.type = type;
+    }
+
+    // ✅ Filter by watched status
+    if (filter === 'Watched') {
+      query.watched = true;
+    } else if (filter === 'ToWatch') {
+      query.watched = false;
     }
 
     const movies = await Movie.find(query);
@@ -20,6 +29,7 @@ router.get('/', async (req, res) => {
     res.render('movies/index', {
       movies,
       user: req.session.user,
+      type,
       filter,
     });
   } catch (error) {
@@ -75,11 +85,13 @@ router.post('/', isSignedIn, async (req, res) => {
     res.redirect('/');
   }
 });
+
 // EDIT FORM - Show the edit page for a movie
 router.get('/:id/edit', isSignedIn, async (req, res) => {
   try {
     const movie = await Movie.findById(req.params.id);
     if (!movie) return res.redirect('/movies');
+    console.log("🎬 Editing movie:", movie);
     res.render('movies/edit', { movie });
   } catch (err) {
     console.error(err);
@@ -91,13 +103,23 @@ router.get('/:id/edit', isSignedIn, async (req, res) => {
 
 router.post('/:id/edit', async (req, res) => {
   try {
-    await Movie.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const data = req.body;
+
+    // ✅ Fix watched checkbox
+    if (typeof data.watched === 'string') {
+      data.watched = data.watched === 'on';
+    } else {
+      data.watched = false; // unchecked boxes aren't sent at all
+    }
+
+    await Movie.findByIdAndUpdate(req.params.id, data, { new: true });
     res.redirect('/movies');
   } catch (err) {
     console.error(err);
     res.render('movies/edit', { movie: req.body, error: err.message });
   }
 });
+
 // DELETE
 router.get('/:id/delete', isSignedIn, async (req, res) => {
   try {

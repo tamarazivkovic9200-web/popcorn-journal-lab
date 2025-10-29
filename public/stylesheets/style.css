@@ -661,6 +661,35 @@ body.watchlist-page .filter-grid a.active {
   transform: translateY(-2px);
 }
 
+.new-filters {
+  margin-top: 0.8rem;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+/* Smaller size for the new filter buttons */
+.new-filters a {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.85rem;
+  border-radius: 6px;
+}
+
+/* Optional: tighter spacing between small buttons */
+.new-filters {
+  gap: 0.5rem;
+}
+
+/* 🎞 Smooth fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Message style */
 body.watchlist-page .tagline {
   font-family: 'Playfair Display', serif;
@@ -788,6 +817,7 @@ select#type option {
   background-color: #3b4b68;
   box-shadow: 0 0 6px rgba(250, 204, 21, 0.3);
 }
+
 
 
 @media (max-width: 768px) {
