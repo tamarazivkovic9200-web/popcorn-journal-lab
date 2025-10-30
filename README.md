@@ -1,3 +1,9 @@
+
+##  Live Demo
+[Popcorn Journal on Heroku](https://popcorn-journal-app-643a9aa791db.herokuapp.com/)
+
+
+
 ## My app title: ***Popcorn Journal***
 is a full-stack CRUD web app that lets users track their favorite ***Movies*** and ***TV Shows***.  
 You can add, edit, delete, and review shows in your personal watchlist.
